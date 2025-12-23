@@ -1,24 +1,27 @@
 {
 	"schemaVersion": 1,
-	"id": "deathitemtimer",
+	"id": "death-item-timer",
 	"version": "${version}",
-	"name": "Death Item Timer",
-	"description": "Shows despawn timer on items dropped from player deaths",
-	"authors": ["DashKiwi"],
+	"name": "Despawn Timer",
+	"description": "Shows despawn timers on death-dropped items",
+	"authors": [
+		"DashKiwi"
+	],
 	"contact": {
+		"homepage": "https://github.com/DashKiwi/fabric-death-item-timer",
 		"sources": "https://github.com/DashKiwi/fabric-death-item-timer"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/death-item-timer/icon.png",
-	"environment": "server",
+	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.dashkiwi.Deathitemtimer.DeathItemTimerMod"
+			"com.dashkiwi.despawntimer.DespawnTimerMod"
+		],
+		"client": [
+			"com.dashkiwi.DeathitemtimerClient"
 		]
 	},
-	"mixins": [
-		"death-item-timer.mixins.json"
-	],
 	"depends": {
 		"fabricloader": ">=0.18.3",
 		"minecraft": "~1.21.11",
