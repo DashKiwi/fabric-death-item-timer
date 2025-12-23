@@ -39,7 +39,7 @@ public class DespawnTimerMod implements ModInitializer {
                 
                 // Tag items at death location (much larger radius to be safe)
                 server.getCommands().performPrefixedCommand(
-                    player.createCommandSourceStack(),
+                    server.createCommandSourceStack(),
                     String.format("execute positioned %.2f %.2f %.2f run tag @e[type=item,distance=..2] add death_item", x, y, z)
                 );
             }
