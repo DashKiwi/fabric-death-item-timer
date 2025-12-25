@@ -26,26 +26,32 @@ public class DespawnTimerMod implements ModInitializer {
         // Register death event - use ServerLivingEntityEvents instead
         ServerLivingEntityEvents.AFTER_DEATH.register(this::onEntityDeath);
     }
-    
+
     private void onEntityDeath(LivingEntity entity, DamageSource damageSource) {
-        // Check if the entity is a player
         if (entity instanceof ServerPlayer player) {
-            // Player died - tag all items near death location immediately
             if (server != null) {
-                // Store death position
-                double x = player.getX();
-                double y = player.getY();
-                double z = player.getZ();
+                String fullKey = player.level().dimension().toString();
+                String dimensionId = fullKey.contains("/") ? 
+                    fullKey.substring(fullKey.lastIndexOf("/") + 1).trim().replace("]", "") : 
+                    "minecraft:overworld";
                 
-                // Tag items at death location (much larger radius to be safe)
+                String command = String.format(
+                    "execute in %s run tag @e[type=item,x=%.2f,y=%.2f,z=%.2f,distance=..3] add death_item",
+                    dimensionId,
+                    player.getX(),
+                    player.getY(),
+                    player.getZ()
+                );
+                
                 server.getCommands().performPrefixedCommand(
                     server.createCommandSourceStack(),
-                    String.format("execute positioned %.2f %.2f %.2f run tag @e[type=item,distance=..2] add death_item", x, y, z)
+                    command
                 );
+                
+                LOGGER.info("Dimension: " + dimensionId + " | Command: " + command);
             }
         }
     }
-    
     private void onServerStarted(MinecraftServer server) {
         this.server = server;
         LOGGER.info("Server started, datapack functions should be active");
